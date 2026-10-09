@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:gridSplitter="clr-namespace:Syncfusion.Maui.GridSplitter;assembly=Syncfusion.Maui.GridSplitter"
+             x:Class="GridSplitter.MainPage">
+
+     <gridSplitter:SfGridSplitter Orientation="Vertical">
+
+    <!-- Left Pane -->
+    <gridSplitter:SplitterPane>
+        <Border Background="#D6EAF8"
+                Padding="10">
+            <Label Text="Navigation Pane"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+        </Border>
+    </gridSplitter:SplitterPane>
+
+    <!-- Right Pane with Nested Splitter -->
+    <gridSplitter:SplitterPane>
+
+        <gridSplitter:SfGridSplitter Orientation="Horizontal">
+        
+            <gridSplitter:SplitterPane>
+                <Border Background="#D5F5E3"
+                        Padding="10">
+                    <Label Text="Content Pane"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </Border>
+            </gridSplitter:SplitterPane>
+
+            <gridSplitter:SplitterPane>
+                <Border Background="#FADBD8"
+                        Padding="10">
+                    <Label Text="Details Pane"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </Border>
+            </gridSplitter:SplitterPane>
+
+        </gridSplitter:SfGridSplitter>
+
+    </gridSplitter:SplitterPane>
+
+</gridSplitter:SfGridSplitter>
+
+
+</ContentPage>
