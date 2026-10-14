@@ -1,77 +1,130 @@
 # How to Implement Nested Grid Splitters in .NET MAUI
 
-## Overview
+This repository contains a sample explaining how to implement nested Grid Splitters in .NET MAUI using the Syncfusion `SfGridSplitter` control.
 
-The Grid Splitter control in .NET MAUI enables users to resize rows and columns dynamically at runtime, providing greater flexibility when interacting with application layouts. While a single Grid Splitter works well for simple resizing scenarios, many real-world applications require more advanced layouts consisting of multiple independently resizable regions. In such cases, nested Grid Splitters provide an effective solution for building complex and responsive user interfaces.
+Nested Grid Splitters enable developers to create complex and highly flexible layouts by placing one `SfGridSplitter` inside another. This approach is useful when applications require multiple resizable regions that can be adjusted independently. Common scenarios include dashboard applications, file explorers, development tools, management systems, and data analysis applications where users need precise control over the available screen space.
 
-Nested Grid Splitters are created by placing additional Grid Splitter controls inside child grids that are contained within a parent grid. This approach allows different sections of the layout to be resized independently, making it easier for users to organize content according to their preferences. Applications such as dashboards, file explorers, reporting tools, editors, and data management systems often benefit from nested splitter layouts because they need multiple content regions that can be adjusted without affecting other areas of the interface.
+In this example, the primary Grid Splitter is configured with a vertical orientation, dividing the interface into a navigation pane on the left and a content area on the right. The content area contains another Grid Splitter configured with a horizontal orientation. This nested splitter further divides the space into Content and Details panes, allowing users to resize both sections independently.
 
-A common example is an application that contains a navigation panel on the left side and a content area on the right side. Within the content area, additional sections may be required to display details, properties, logs, or preview content. By implementing nested Grid Splitters, users can resize both the outer sections and the inner sections independently. This creates a highly interactive user experience while ensuring that available screen space is used efficiently.
-
-When building nested splitter layouts, the parent grid typically controls the primary division of the page, while child grids manage secondary content regions. Each Grid Splitter interacts only with its immediate neighboring rows or columns, allowing multiple splitters to coexist within the same page without interfering with one another. This separation of responsibilities makes nested layouts easy to maintain and extend.
-
-Another advantage of nested Grid Splitters is their ability to support a variety of screen sizes. Users can allocate more space to frequently used content areas and reduce the size of less important regions. This adaptability improves usability and helps create professional desktop-style layouts within .NET MAUI applications.
-
-This article demonstrates how to create a nested Grid Splitter layout using a parent grid with a vertical splitter and a child grid containing a horizontal splitter. The example shows how multiple splitters can work together to provide independent resizing behavior across different sections of the interface, resulting in a flexible and user-friendly layout.
+By combining multiple Grid Splitters, developers can build sophisticated layouts while maintaining a consistent and intuitive user experience. The nested splitter automatically manages pane sizing and updates the layout dynamically when users drag any splitter.
 
 ## Sample
 
+### XAML
+
 ```xml
-<Grid>
-    <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="Auto" />
-        <ColumnDefinition Width="2*" />
-    </Grid.ColumnDefinitions>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:gridSplitter="clr-namespace:Syncfusion.Maui.GridSplitter;assembly=Syncfusion.Maui.GridSplitter"
+             x:Class="GridSplitter.MainPage">
 
-    <!-- Left Panel -->
-    <Border Grid.Column="0"
-            Background="LightBlue">
-        <Label Text="Navigation Pane"
-               HorizontalOptions="Center"
-               VerticalOptions="Center" />
-    </Border>
+    <gridSplitter:SfGridSplitter Orientation="Vertical">
 
-    <!-- Vertical Grid Splitter -->
-    <syncfusion:SfGridSplitter
-        Grid.Column="1"
-        WidthRequest="6" />
+        <!-- Left Pane -->
+        <gridSplitter:SplitterPane>
+            <Border Background="#D6EAF8"
+                    Padding="10">
+                <Label Text="Navigation Pane"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+            </Border>
+        </gridSplitter:SplitterPane>
 
-    <!-- Right Panel -->
-    <Grid Grid.Column="2">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+        <!-- Right Pane with Nested Splitter -->
+        <gridSplitter:SplitterPane>
 
-        <Border Grid.Row="0"
-                Background="LightGreen">
-            <Label Text="Top Content"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center" />
-        </Border>
+            <gridSplitter:SfGridSplitter Orientation="Horizontal">
 
-        <!-- Nested Horizontal Grid Splitter -->
-        <syncfusion:SfGridSplitter
-            Grid.Row="1"
-            HeightRequest="6" />
+                <gridSplitter:SplitterPane>
+                    <Border Background="#D5F5E3"
+                            Padding="10">
+                        <Label Text="Content Pane"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                    </Border>
+                </gridSplitter:SplitterPane>
 
-        <Border Grid.Row="2"
-                Background="LightCoral">
-            <Label Text="Bottom Content"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center" />
-        </Border>
-    </Grid>
-</Grid>
+                <gridSplitter:SplitterPane>
+                    <Border Background="#FADBD8"
+                            Padding="10">
+                        <Label Text="Details Pane"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                    </Border>
+                </gridSplitter:SplitterPane>
+
+            </gridSplitter:SfGridSplitter>
+
+        </gridSplitter:SplitterPane>
+
+    </gridSplitter:SfGridSplitter>
+
+</ContentPage>
 ```
+
+## How It Works
+
+The outer `SfGridSplitter` uses a vertical orientation to divide the page into two major sections:
+
+- Navigation Pane
+- Content Area
+
+The Content Area contains another `SfGridSplitter` configured with a horizontal orientation. This nested Grid Splitter creates two additional panes:
+
+- Content Pane
+- Details Pane
+
+As a result, the layout consists of three functional regions:
+
+1. Navigation Pane
+2. Content Pane
+3. Details Pane
+
+Users can interact with both splitters independently:
+
+- The outer splitter resizes the Navigation Pane and Content Area.
+- The inner splitter resizes the Content Pane and Details Pane.
+- Layout updates occur automatically while dragging either splitter.
+- Each pane can host any .NET MAUI view, including forms, charts, lists, images, and custom controls.
 
 ## Output
 
-- The page is divided into left and right sections using a vertical Grid Splitter.
-- Users can drag the vertical splitter to adjust the width of the navigation and content panels.
-- The right section contains a nested grid with an additional horizontal Grid Splitter.
-- Users can resize the top and bottom content regions independently.
-- Multiple sections can be adjusted without impacting unrelated layout regions.
-- The layout provides a flexible and desktop-
+When the application runs, the following behavior can be observed:
+
+- A navigation pane appears on the left side of the screen.
+- A content area appears on the right side.
+- The content area is further divided into Content and Details panes.
+- The outer splitter can be dragged to resize the navigation section.
+- The inner splitter can be dragged to resize the content and details sections.
+- Both splitters work independently without affecting each other's functionality.
+- Pane sizes update dynamically at runtime.
+- The layout remains responsive across different screen sizes and orientations.
+
+## Benefits of Nested Grid Splitters
+
+Nested Grid Splitters provide several advantages for building advanced user interfaces:
+
+- Create multi-level resizable layouts.
+- Organize large amounts of content efficiently.
+- Improve screen space utilization.
+- Allow users to customize pane sizes based on their workflow.
+- Support complex dashboard and workspace scenarios.
+- Provide a desktop-like experience in .NET MAUI applications.
+- Reduce the need for custom layout calculations.
+
+## Common Use Cases
+
+Nested Grid Splitters are particularly useful for:
+
+- File explorer applications.
+- Project management dashboards.
+- Data analytics solutions.
+- Reporting tools.
+- Development environments.
+- Administrative portals.
+- Customer management systems.
+- Monitoring and control dashboards.
+
+## Conclusion
+
+The Syncfusion `SfGridSplitter` makes it easy to implement nested resizable layouts in .NET MAUI applications. By placing one Grid Splitter inside another, developers can create rich and flexible interfaces that allow users to adjust multiple regions independently. This approach enhances usability, improves workspace organization, and helps build professional desktop-style applications across all supported .NET MAUI platforms.
